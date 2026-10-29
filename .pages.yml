@@ -1,0 +1,42 @@
+media:
+  input: images
+  output: /images
+
+content:
+  - name: articoli
+    label: Articoli del diario
+    type: collection
+    path: contenuti/post
+    filename: "{primary}.md"
+    view:
+      fields: [title, date, category]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titolo
+        type: string
+        required: true
+      - name: date
+        label: Data
+        type: date
+        required: true
+      - name: category
+        label: Categoria
+        type: select
+        options:
+          values:
+            - Pensieri
+            - Emozioni
+            - Vita quotidiana
+            - Società
+            - Riflessioni
+      - name: cover
+        label: Immagine di copertina
+        type: image
+      - name: body
+        label: Testo e immagini
+        type: rich-text
