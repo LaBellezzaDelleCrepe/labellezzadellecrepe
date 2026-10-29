@@ -6,6 +6,16 @@ base = Path("contenuti")
 destinazione = base / "articoli.json"
 articoli = json.loads(destinazione.read_text(encoding="utf-8"))
 
+# Conserva gli articoli creati prima di Pages CMS,
+# ma rimuove quelli CMS che non esistono più.
+cartella_post = base / "post"
+ids_presenti = {f.stem for f in cartella_post.glob("*.md")}
+articoli = [
+    a for a in articoli
+    if a.get("id") in ids_presenti
+    or not a.get("gestito_da_cms", False)
+]
+
 def valore(testo):
     testo = testo.strip().strip('"').strip("'")
     return testo
@@ -41,6 +51,7 @@ for file in (base / "post").glob("*.md"):
 
     articolo = {
         "id": file.stem,
+        "gestito_da_cms": True,
         "titolo": titolo,
         "data": data,
         "categoria": categoria,
