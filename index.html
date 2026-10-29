@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8f4ec">
+<meta name="description" content="La bellezza delle crepe, un diario di pensieri, parole e illustrazioni.">
+<title>La bellezza delle crepe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f8f4ec;
+  --ink:#514237;
+  --sage:#89977d;
+  --line:#ddd5c8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Cormorant Garamond",serif;
+}
+header{
+  position:relative;
+  text-align:center;
+  padding:85px 20px 35px;
+  overflow:hidden;
+}
+header h1{
+  font-family:"Great Vibes",cursive;
+  font-size:clamp(49px,8vw,92px);
+  font-weight:400;
+  line-height:1.3;
+  margin:12px 0;
+}
+.subtitle{
+  font-size:18px;
+  font-style:italic;
+  letter-spacing:1px;
+}
+.botanical{
+  position:absolute;
+  width:175px;
+  opacity:.85;
+  pointer-events:none;
+}
+.left{top:8px;left:-35px}
+.right{
+  top:18px;
+  right:-35px;
+  transform:scaleX(-1);
+}
+nav{
+  display:flex;
+  justify-content:center;
+  gap:32px;
+  padding:19px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+nav a{
+  color:var(--ink);
+  text-decoration:none;
+  font-size:19px;
+}
+nav a:hover{color:var(--sage)}
+main{
+  max-width:850px;
+  margin:65px auto;
+  padding:0 22px;
+}
+.intro{
+  text-align:center;
+  font-size:23px;
+  font-style:italic;
+  margin-bottom:65px;
+}
+article{
+  margin-bottom:75px;
+  padding-bottom:45px;
+  border-bottom:1px solid var(--line);
+}
+article .date{
+  font:11px "DM Sans",sans-serif;
+  letter-spacing:2px;
+  color:#8b8175;
+  text-transform:uppercase;
+}
+article h2{
+  font-size:clamp(32px,5vw,47px);
+  font-weight:500;
+  margin:14px 0 20px;
+}
+.artwork{
+  width:100%;
+  min-height:240px;
+  aspect-ratio:16/9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ebe5da;
+  color:#8a857b;
+  font-style:italic;
+  font-size:20px;
+  text-align:center;
+  margin:22px 0;
+}
+article p{
+  font-size:22px;
+  line-height:1.65;
+}
+.read-more{
+  display:inline-block;
+  color:var(--ink);
+  font-size:18px;
+  text-decoration:none;
+  border-bottom:1px solid var(--sage);
+  padding-bottom:5px;
+}
+footer{
+  text-align:center;
+  padding:50px 20px;
+  color:#84776a;
+  font-size:17px;
+}
+@media(max-width:600px){
+  header{padding:75px 15px 30px}
+  .botanical{width:125px}
+  nav{gap:22px}
+  main{margin:45px auto}
+  .intro{font-size:20px}
+  article p{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="botanical left" viewBox="0 0 180 230" aria-hidden="true">
+    <path d="M20 220 Q95 115 92 10" fill="none" stroke="#89977d" stroke-width="2"/>
+    <g fill="#a5b197">
+      <ellipse cx="64" cy="155" rx="10" ry="24" transform="rotate(-45 64 155)"/>
+      <ellipse cx="106" cy="127" rx="10" ry="23" transform="rotate(40 106 127)"/>
+      <ellipse cx="72" cy="88" rx="9" ry="21" transform="rotate(-45 72 88)"/>
+      <ellipse cx="105" cy="57" rx="8" ry="20" transform="rotate(40 105 57)"/>
+    </g>
+    <g fill="#fffdfa" stroke="#ddd6c9" stroke-width=".6">
+      <circle cx="92" cy="15" r="7"/>
+      <circle cx="84" cy="9" r="6"/>
+      <circle cx="100" cy="8" r="6"/>
+      <circle cx="91" cy="2" r="6"/>
+      <circle cx="118" cy="103" r="5"/>
+      <circle cx="126" cy="98" r="5"/>
+      <circle cx="122" cy="110" r="5"/>
+    </g>
+  </svg>
+
+  <svg class="botanical right" viewBox="0 0 180 230" aria-hidden="true">
+    <path d="M20 220 Q95 115 92 10" fill="none" stroke="#89977d" stroke-width="2"/>
+    <g fill="#a5b197">
+      <ellipse cx="64" cy="155" rx="10" ry="24" transform="rotate(-45 64 155)"/>
+      <ellipse cx="106" cy="127" rx="10" ry="23" transform="rotate(40 106 127)"/>
+      <ellipse cx="72" cy="88" rx="9" ry="21" transform="rotate(-45 72 88)"/>
+      <ellipse cx="105" cy="57" rx="8" ry="20" transform="rotate(40 105 57)"/>
+    </g>
+    <g fill="#fffdfa" stroke="#ddd6c9" stroke-width=".6">
+      <circle cx="92" cy="15" r="7"/>
+      <circle cx="84" cy="9" r="6"/>
+      <circle cx="100" cy="8" r="6"/>
+      <circle cx="91" cy="2" r="6"/>
+    </g>
+  </svg>
+
+  <h1>La bellezza delle crepe</h1>
+  <div class="subtitle">Non tutto ciò che si spezza desidera essere riparato.</div>
+</header>
+
+<nav>
+  <a href="index.html">Diario</a>
+  <a href="archivio.html">Archivio</a>
+  <a href="chi-sono.html">Chi sono</a>
+</nav>
+
+<main id="archivio">
+  <div class="intro">Un piccolo spazio per le parole che restano.</div>
+
+  <div id="articoli">
+    <p class="intro">I pensieri stanno arrivando...</p>
+  </div>
+</main>
+
+<footer id="chi-sono">
+  La bellezza delle crepe · Un diario personale
+  <p>© 2026</p>
+</footer>
+
+
+<script>
+const mesi = [
+  "gennaio","febbraio","marzo","aprile","maggio","giugno",
+  "luglio","agosto","settembre","ottobre","novembre","dicembre"
+];
+
+function dataItaliana(data) {
+  const [anno, mese, giorno] = data.split("-").map(Number);
+  return `${giorno} ${mesi[mese - 1]} ${anno}`;
+}
+
+function creaElemento(tag, classe, testo) {
+  const elemento = document.createElement(tag);
+  if (classe) elemento.className = classe;
+  if (testo !== undefined) elemento.textContent = testo;
+  return elemento;
+}
+
+async function caricaArticoli() {
+  const contenitore = document.getElementById("articoli");
+
+  try {
+    const risposta = await fetch("contenuti/articoli.json", {
+      cache: "no-store"
+    });
+
+    if (!risposta.ok) throw new Error("Archivio non disponibile");
+
+    const articoli = await risposta.json();
+    articoli.sort((a, b) => b.data.localeCompare(a.data));
+
+    contenitore.replaceChildren();
+
+    if (articoli.length === 0) {
+      contenitore.append(
+        creaElemento("p", "intro", "Qui nasceranno nuovi pensieri.")
+      );
+      return;
+    }
+
+    for (const articolo of articoli) {
+      const scheda = creaElemento("article");
+
+      const data = creaElemento(
+        "div",
+        "date",
+        `${dataItaliana(articolo.data)} · ${articolo.categoria || "Diario"}`
+      );
+
+      const titolo = creaElemento("h2", "", articolo.titolo);
+
+      const copertina = creaElemento("div", "artwork");
+
+      if (articolo.copertina) {
+        const immagine = document.createElement("img");
+        immagine.src = articolo.copertina;
+        immagine.alt = articolo.titolo;
+        immagine.style.cssText =
+          "width:100%;height:100%;object-fit:cover";
+        copertina.append(immagine);
+      } else {
+        copertina.textContent = "Qui nascerà la tua illustrazione.";
+      }
+
+      const estratto = creaElemento("p", "", articolo.estratto);
+
+      const collegamento = creaElemento(
+        "a",
+        "read-more",
+        "Continua a leggere"
+      );
+      collegamento.href =
+        "articoli/leggi.html?id=" + encodeURIComponent(articolo.id);
+
+      scheda.append(data, titolo, copertina, estratto, collegamento);
+      contenitore.append(scheda);
+    }
+  } catch (errore) {
+    contenitore.replaceChildren(
+      creaElemento(
+        "p",
+        "intro",
+        "Non è stato possibile caricare gli articoli."
+      )
+    );
+  }
+}
+
+caricaArticoli();
+</script>
+
+</body>
+</html>

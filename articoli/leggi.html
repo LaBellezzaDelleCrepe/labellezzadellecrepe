@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Articolo | La bellezza delle crepe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f8f4ec;
+  --ink:#514237;
+  --sage:#89977d;
+  --line:#ddd5c8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Cormorant Garamond",serif;
+}
+header{
+  text-align:center;
+  padding:45px 20px 25px;
+}
+.site-title{
+  font-family:"Great Vibes",cursive;
+  font-size:clamp(38px,6vw,60px);
+  color:var(--ink);
+  text-decoration:none;
+}
+nav{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  padding:18px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+nav a{
+  color:var(--ink);
+  text-decoration:none;
+  font-size:19px;
+}
+nav a:hover{color:var(--sage)}
+main{
+  max-width:760px;
+  margin:65px auto;
+  padding:0 24px;
+}
+.date{
+  text-align:center;
+  font:11px "DM Sans",sans-serif;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:#8b8175;
+}
+h1{
+  font-size:clamp(42px,7vw,65px);
+  font-weight:500;
+  text-align:center;
+  line-height:1.15;
+  margin:20px 0 35px;
+}
+.ornament{
+  text-align:center;
+  color:var(--sage);
+  font-size:25px;
+  margin-bottom:35px;
+}
+.artwork{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#ebe5da;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#8a857b;
+  font-style:italic;
+  font-size:20px;
+  text-align:center;
+  padding:20px;
+  margin-bottom:45px;
+}
+.content{
+  font-size:23px;
+  line-height:1.85;
+}
+.content p{margin-bottom:28px}
+.content p:first-child:first-letter{
+  float:left;
+  font-size:75px;
+  line-height:.9;
+  padding:8px 10px 0 0;
+  color:#89977d;
+}
+.end{
+  text-align:center;
+  color:var(--sage);
+  margin:55px 0;
+  font-size:23px;
+}
+.back{
+  display:block;
+  text-align:center;
+  color:var(--ink);
+  text-decoration:none;
+  font-size:20px;
+  margin:35px auto;
+}
+.back:hover{color:var(--sage)}
+footer{
+  border-top:1px solid var(--line);
+  text-align:center;
+  padding:35px 20px;
+  color:#84776a;
+  font-size:17px;
+}
+@media(max-width:600px){
+  main{margin:40px auto}
+  .content{font-size:21px}
+  .content p:first-child:first-letter{font-size:65px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<a class="site-title" href="../index.html">La bellezza delle crepe</a>
+</header>
+
+<nav>
+<a href="../index.html">Diario</a>
+<a href="../archivio.html">Archivio</a>
+<a href="../chi-sono.html">Chi sono</a>
+</nav>
+
+
+<main>
+  <div class="date" id="data-articolo"></div>
+  <h1 id="titolo-articolo"></h1>
+  <div class="ornament">❀ ─── ❀</div>
+  <div class="artwork" id="copertina-articolo"></div>
+  <div class="content" id="testo-articolo"></div>
+  <div class="end">❀</div>
+  <a class="back" href="../index.html">← Torna al diario</a>
+</main>
+
+
+<footer>
+La bellezza delle crepe · Un diario personale
+</footer>
+
+
+<script>
+const mesi = [
+  "gennaio","febbraio","marzo","aprile","maggio","giugno",
+  "luglio","agosto","settembre","ottobre","novembre","dicembre"
+];
+
+async function mostraArticolo() {
+  const contenitore = document.getElementById("testo-articolo");
+
+  try {
+    const risposta = await fetch("../contenuti/articoli.json", {
+      cache: "no-store"
+    });
+    if (!risposta.ok) throw new Error("Archivio non disponibile");
+
+    const articoli = await risposta.json();
+    const parametri = new URLSearchParams(location.search);
+    const id = parametri.get("id");
+    const articolo = articoli.find(a => a.id === id);
+
+    if (!articolo) throw new Error("Articolo non trovato");
+
+    document.title = articolo.titolo + " | La bellezza delle crepe";
+
+    const [anno, mese, giorno] = articolo.data.split("-");
+
+    document.getElementById("data-articolo").textContent =
+      Number(giorno) + " " + mesi[Number(mese)-1] + " " +
+      anno + " · " + (articolo.categoria || "Diario");
+
+    document.getElementById("titolo-articolo").textContent =
+      articolo.titolo;
+
+    const copertina = document.getElementById("copertina-articolo");
+
+    if (articolo.copertina) {
+      const img = document.createElement("img");
+      img.src = "../" + articolo.copertina.replace(/^\/+/, "");
+      img.alt = articolo.titolo;
+      img.style.cssText = "width:100%;height:100%;object-fit:cover";
+      copertina.append(img);
+    } else {
+      copertina.textContent = "Qui inseriremo l'illustrazione dell'articolo.";
+    }
+
+    for (const paragrafo of articolo.contenuto || []) {
+      const p = document.createElement("p");
+      p.textContent = paragrafo;
+      contenitore.append(p);
+    }
+
+  } catch (errore) {
+    contenitore.textContent =
+      "Questo articolo non è disponibile.";
+  }
+}
+
+mostraArticolo();
+</script>
+
+</body>
+</html>

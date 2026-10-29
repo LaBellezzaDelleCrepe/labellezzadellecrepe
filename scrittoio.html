@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il mio scrittoio | La bellezza delle crepe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f8f4ec;--ink:#514237;--sage:#89977d;--line:#ddd5c8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Cormorant Garamond",serif}
+header{text-align:center;padding:45px 15px 25px;border-bottom:1px solid var(--line)}
+header h1{font-family:"Great Vibes",cursive;font-size:clamp(45px,8vw,70px);font-weight:400;margin:0}
+header p{font-size:20px;font-style:italic;margin:5px}
+main{max-width:760px;margin:45px auto;padding:0 22px 70px}
+h2{font-size:37px;font-weight:500;text-align:center;margin:0 0 10px}
+.flower{text-align:center;color:var(--sage);font-size:24px;margin-bottom:35px}
+label{display:block;font-size:21px;margin:25px 0 8px}
+input,select,textarea{
+ width:100%;border:1px solid var(--line);border-radius:5px;
+ background:#fffdf9;color:var(--ink);padding:14px;
+ font-family:"Cormorant Garamond",serif;font-size:21px
+}
+textarea{min-height:320px;line-height:1.6;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:1px solid var(--sage)}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+button{
+ flex:1;min-width:150px;padding:14px;border:1px solid var(--sage);
+ background:var(--sage);color:white;border-radius:5px;
+ font-family:inherit;font-size:20px;cursor:pointer
+}
+button.secondary{background:transparent;color:var(--ink)}
+.note{font-size:17px;font-style:italic;color:#817568;line-height:1.5}
+#messaggio{font-size:19px;margin-top:20px;color:#62765b}
+footer{text-align:center;border-top:1px solid var(--line);padding:25px;font-size:17px}
+</style>
+</head>
+<body>
+<header>
+<h1>La bellezza delle crepe</h1>
+<p>Uno spazio soltanto per le tue parole.</p>
+</header>
+<main>
+<h2>Il mio scrittoio</h2>
+<div class="flower">❀ ─── ❀</div>
+
+<label for="titolo">Titolo del pensiero</label>
+<input id="titolo" placeholder="Un titolo da ricordare...">
+
+<label for="categoria">Categoria</label>
+<select id="categoria">
+<option>Pensieri</option>
+<option>Emozioni</option>
+<option>Vita quotidiana</option>
+<option>Società</option>
+<option>Riflessioni</option>
+</select>
+
+<label for="testo">Le tue parole</label>
+<textarea id="testo" placeholder="Comincia a scrivere qui..."></textarea>
+
+<div class="buttons">
+<button class="secondary" onclick="salvaBozza()">Salva bozza</button>
+<button onclick="preparaArticolo()">Prepara articolo</button>
+</div>
+
+<p id="messaggio" role="status" aria-live="polite"></p>
+<p class="note">Le bozze vengono salvate soltanto in questo browser. Il pulsante «Prepara articolo» scarica un file JSON: non pubblica ancora sul sito.</p>
+</main>
+<footer>❀ La bellezza delle crepe ❀</footer>
+<script>
+const chiave = "crepe-bozza-locale";
+
+function datiForm() {
+ return {
+   titolo:document.getElementById("titolo").value.trim(),
+   categoria:document.getElementById("categoria").value,
+   testo:document.getElementById("testo").value
+ };
+}
+function salvaBozza() {
+ try {
+   localStorage.setItem(chiave,JSON.stringify(datiForm()));
+   document.getElementById("messaggio").textContent="Bozza salvata in questo browser. ♡";
+ } catch {
+   document.getElementById("messaggio").textContent="Non è stato possibile salvare la bozza.";
+ }
+}
+function preparaArticolo() {
+ const d=datiForm();
+ if(!d.titolo || !d.testo.trim()){
+   document.getElementById("messaggio").textContent="Scrivi almeno un titolo e il testo.";
+   return;
+ }
+ const oggi=new Date();
+ const data=[oggi.getFullYear(),String(oggi.getMonth()+1).padStart(2,"0"),String(oggi.getDate()).padStart(2,"0")].join("-");
+ const id="pensiero-"+Date.now();
+ const paragrafi=d.testo.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+ const articolo={
+   id:id,titolo:d.titolo,data:data,categoria:d.categoria,
+   copertina:"",estratto:d.testo.trim().slice(0,220),
+   contenuto:paragrafi,immagini:[]
+ };
+ const blob=new Blob([JSON.stringify(articolo,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download=id+".json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ document.getElementById("messaggio").textContent="Articolo preparato e scaricato. Non è ancora pubblicato.";
+}
+try{
+ const bozza=JSON.parse(localStorage.getItem(chiave)||"null");
+ if(bozza){
+   document.getElementById("titolo").value=bozza.titolo||"";
+   document.getElementById("categoria").value=bozza.categoria||"Pensieri";
+   document.getElementById("testo").value=bozza.testo||"";
+ }
+}catch{}
+</script>
+</body>
+</html>

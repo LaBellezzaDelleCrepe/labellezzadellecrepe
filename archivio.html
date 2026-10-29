@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archivio | La bellezza delle crepe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f8f4ec;
+  --ink:#514237;
+  --sage:#89977d;
+  --line:#ddd5c8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Cormorant Garamond",serif;
+}
+header{
+  position:relative;
+  text-align:center;
+  padding:55px 20px 35px;
+  overflow:hidden;
+}
+.site-title{
+  font-family:"Great Vibes",cursive;
+  font-size:clamp(40px,7vw,65px);
+  color:var(--ink);
+  text-decoration:none;
+}
+header .sprig{
+  display:block;
+  color:var(--sage);
+  font-size:23px;
+  margin-top:15px;
+}
+nav{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  padding:18px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+nav a{
+  color:var(--ink);
+  text-decoration:none;
+  font-size:19px;
+}
+nav a:hover{color:var(--sage)}
+main{
+  max-width:760px;
+  margin:65px auto 100px;
+  padding:0 24px;
+}
+h1{
+  text-align:center;
+  font-size:clamp(42px,7vw,60px);
+  font-weight:500;
+  margin:0;
+}
+.intro{
+  text-align:center;
+  font-size:22px;
+  font-style:italic;
+  margin:15px 0 65px;
+}
+.year{
+  font-size:39px;
+  font-weight:500;
+  border-bottom:1px solid var(--line);
+  padding-bottom:12px;
+  margin-bottom:35px;
+}
+.month{
+  margin:0 0 45px;
+}
+.month h3{
+  font-size:27px;
+  font-style:italic;
+  font-weight:500;
+  color:#74856e;
+  margin-bottom:20px;
+}
+.entry{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:20px;
+  padding:17px 0;
+  border-bottom:1px solid #e9e2d7;
+}
+.entry a{
+  color:var(--ink);
+  text-decoration:none;
+  font-size:25px;
+}
+.entry a:hover{
+  color:var(--sage);
+}
+.entry time{
+  font:11px "DM Sans",sans-serif;
+  color:#94897d;
+  white-space:nowrap;
+}
+.flower{
+  text-align:center;
+  font-size:24px;
+  color:var(--sage);
+  margin:70px 0 30px;
+}
+.back{
+  display:block;
+  text-align:center;
+  font-size:20px;
+  color:var(--ink);
+  text-decoration:none;
+}
+footer{
+  border-top:1px solid var(--line);
+  text-align:center;
+  padding:35px 20px;
+  font-size:17px;
+  color:#84776a;
+}
+@media(max-width:600px){
+  main{margin:45px auto 70px}
+  .entry{align-items:flex-start}
+  .entry a{font-size:22px}
+  .entry time{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="site-title" href="index.html">La bellezza delle crepe</a>
+  <span class="sprig">❀</span>
+</header>
+
+<nav>
+  <a href="index.html">Diario</a>
+  <a href="archivio.html">Archivio</a>
+  <a href="chi-sono.html">Chi sono</a>
+</nav>
+
+<main>
+  <h1>Archivio dei pensieri</h1>
+  <p class="intro">Le parole lasciate lungo il cammino.</p>
+
+  <div id="elenco-archivio">
+    <p class="intro">Sto raccogliendo i pensieri...</p>
+  </div>
+
+  <div class="flower">❀</div>
+  <a class="back" href="index.html">← Torna al diario</a>
+</main>
+
+<footer>La bellezza delle crepe · Un diario personale</footer>
+
+
+<script>
+const nomiMesi = [
+  "Gennaio", "Febbraio", "Marzo", "Aprile",
+  "Maggio", "Giugno", "Luglio", "Agosto",
+  "Settembre", "Ottobre", "Novembre", "Dicembre"
+];
+
+async function mostraArchivio() {
+  const contenitore = document.getElementById("elenco-archivio");
+
+  try {
+    const risposta = await fetch("contenuti/articoli.json", {
+      cache: "no-store"
+    });
+    if (!risposta.ok) throw new Error("Caricamento non riuscito");
+
+    const articoli = await risposta.json();
+    articoli.sort((a, b) => b.data.localeCompare(a.data));
+    contenitore.replaceChildren();
+
+    let annoCorrente = "";
+    let meseCorrente = "";
+    let sezioneMese = null;
+
+    for (const articolo of articoli) {
+      const [anno, mese, giorno] = articolo.data.split("-");
+      const chiaveMese = anno + "-" + mese;
+
+      if (anno !== annoCorrente) {
+        const titoloAnno = document.createElement("h2");
+        titoloAnno.className = "year";
+        titoloAnno.textContent = anno;
+        contenitore.append(titoloAnno);
+        annoCorrente = anno;
+      }
+
+      if (chiaveMese !== meseCorrente) {
+        sezioneMese = document.createElement("div");
+        sezioneMese.className = "month";
+
+        const titoloMese = document.createElement("h3");
+        titoloMese.textContent = nomiMesi[Number(mese) - 1];
+
+        sezioneMese.append(titoloMese);
+        contenitore.append(sezioneMese);
+        meseCorrente = chiaveMese;
+      }
+
+      const riga = document.createElement("div");
+      riga.className = "entry";
+
+      const link = document.createElement("a");
+      link.href = "articoli/" +
+        encodeURIComponent(articolo.id) + ".html";
+      link.textContent = articolo.titolo;
+
+      const data = document.createElement("time");
+      data.dateTime = articolo.data;
+      data.textContent = Number(giorno) + " " +
+        nomiMesi[Number(mese) - 1].toLowerCase();
+
+      riga.append(link, data);
+      sezioneMese.append(riga);
+    }
+
+    if (!articoli.length) {
+      const messaggio = document.createElement("p");
+      messaggio.className = "intro";
+      messaggio.textContent = "L'archivio attende il primo pensiero.";
+      contenitore.append(messaggio);
+    }
+  } catch (errore) {
+    contenitore.textContent =
+      "Non è stato possibile caricare l'archivio.";
+  }
+}
+
+mostraArchivio();
+</script>
+
+</body>
+</html>
