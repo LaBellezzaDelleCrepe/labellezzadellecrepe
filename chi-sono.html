@@ -228,43 +228,132 @@ header h2 {
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+
+<style id="restyling-ceruleo-fiaba">
+body { background: #B6D9EB !important; }
+
+.cielo-costellazioni {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.cielo-costellazioni .costellazione-vintage {
+  position: absolute !important;
+  width: clamp(85px, 12vw, 155px) !important;
+  height: auto !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,.5));
+}
+.cielo-costellazioni .costellazione-vintage:nth-child(1) {left:1%;top:5%;transform:rotate(-12deg)}
+.cielo-costellazioni .costellazione-vintage:nth-child(2) {right:1%;top:8%;transform:rotate(18deg)}
+.cielo-costellazioni .costellazione-vintage:nth-child(3) {left:2%;top:38%;transform:rotate(28deg)}
+.cielo-costellazioni .costellazione-vintage:nth-child(4) {right:2%;top:41%;transform:rotate(-20deg)}
+.cielo-costellazioni .costellazione-vintage:nth-child(5) {left:1%;top:72%;transform:rotate(-15deg)}
+.cielo-costellazioni .costellazione-vintage:nth-child(6) {right:1%;top:74%;transform:rotate(12deg)}
+
+.luna-fiaba {
+  display:block;
+  width:220px;
+  max-width:58%;
+  height:auto;
+  margin:8px auto 5px;
+  pointer-events:none;
+}
+header { position:relative; }
+header > .luna-fiaba { position:relative; z-index:1; }
+@media(max-width:600px) {
+  .cielo-costellazioni .costellazione-vintage {
+    width:60px !important;
+    opacity:.95 !important;
+  }
+  .luna-fiaba {width:150px;margin:5px auto}
+}
+</style>
+
 </head>
 <body>
-<div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;">
+<div class="cielo-costellazioni">
 <svg class="costellazione-vintage sinistra"
-     viewBox="0 0 90 120" aria-hidden="true">
-  <g fill="none" stroke="#968475"
-     stroke-width="0.85" stroke-linecap="round">
-    <path d="M13 85 L36 52 L66 67 L76 21"
-          stroke-dasharray="2 3"/>
-    <path d="M36 52 L23 17" stroke-dasharray="2 3"/>
-    <path d="M13 79 V91 M7 85 H19"/>
-    <path d="M36 46 V58 M30 52 H42"/>
-    <path d="M66 62 V72 M61 67 H71"/>
-    <path d="M76 14 V28 M69 21 H83"/>
-    <path d="M23 12 V22 M18 17 H28"/>
-    <circle cx="50" cy="97" r="1.3" fill="#968475"/>
-    <circle cx="81" cy="91" r="1" fill="#968475"/>
-    <circle cx="10" cy="35" r="1" fill="#968475"/>
-  </g>
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M14 98 L39 60 M39 60 L70 75 M70 75 L84 22 M39 60 L27 19" stroke-dasharray="2.5 4"/>
+<path d="M14 92 V104 M8 98 H20"/><path d="M39 54 V66 M33 60 H45"/><path d="M70 69 V81 M64 75 H76"/><path d="M84 16 V28 M78 22 H90"/><path d="M27 13 V25 M21 19 H33"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
 </svg>
-
 <svg class="costellazione-vintage destra"
-     viewBox="0 0 90 120" aria-hidden="true">
-  <g fill="none" stroke="#968475"
-     stroke-width="0.85" stroke-linecap="round">
-    <path d="M13 85 L36 52 L66 67 L76 21"
-          stroke-dasharray="2 3"/>
-    <path d="M36 52 L23 17" stroke-dasharray="2 3"/>
-    <path d="M13 79 V91 M7 85 H19"/>
-    <path d="M36 46 V58 M30 52 H42"/>
-    <path d="M66 62 V72 M61 67 H71"/>
-    <path d="M76 14 V28 M69 21 H83"/>
-    <path d="M23 12 V22 M18 17 H28"/>
-    <circle cx="50" cy="97" r="1.3" fill="#968475"/>
-    <circle cx="81" cy="91" r="1" fill="#968475"/>
-    <circle cx="10" cy="35" r="1" fill="#968475"/>
-  </g>
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M14 98 L39 60 M39 60 L70 75 M70 75 L84 22 M39 60 L27 19" stroke-dasharray="2.5 4"/>
+<path d="M14 92 V104 M8 98 H20"/><path d="M39 54 V66 M33 60 H45"/><path d="M70 69 V81 M64 75 H76"/><path d="M84 16 V28 M78 22 H90"/><path d="M27 13 V25 M21 19 H33"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
+</svg>
+<svg class="costellazione-vintage sinistra"
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M16 25 L48 48 M48 48 L22 85 M22 85 L73 103 M48 48 L82 57" stroke-dasharray="2.5 4"/>
+<path d="M16 19 V31 M10 25 H22"/><path d="M48 42 V54 M42 48 H54"/><path d="M22 79 V91 M16 85 H28"/><path d="M73 97 V109 M67 103 H79"/><path d="M82 51 V63 M76 57 H88"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
+</svg>
+<svg class="costellazione-vintage destra"
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M16 25 L48 48 M48 48 L22 85 M22 85 L73 103 M48 48 L82 57" stroke-dasharray="2.5 4"/>
+<path d="M16 19 V31 M10 25 H22"/><path d="M48 42 V54 M42 48 H54"/><path d="M22 79 V91 M16 85 H28"/><path d="M73 97 V109 M67 103 H79"/><path d="M82 51 V63 M76 57 H88"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
+</svg>
+<svg class="costellazione-vintage sinistra"
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M12 65 L36 23 M36 23 L73 38 M73 38 L57 91 M36 23 L83 108" stroke-dasharray="2.5 4"/>
+<path d="M12 59 V71 M6 65 H18"/><path d="M36 17 V29 M30 23 H42"/><path d="M73 32 V44 M67 38 H79"/><path d="M57 85 V97 M51 91 H63"/><path d="M83 102 V114 M77 108 H89"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
+</svg>
+<svg class="costellazione-vintage destra"
+viewBox="0 0 100 130" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.45"
+stroke-linecap="round">
+<path d="M12 65 L36 23 M36 23 L73 38 M73 38 L57 91 M36 23 L83 108" stroke-dasharray="2.5 4"/>
+<path d="M12 59 V71 M6 65 H18"/><path d="M36 17 V29 M30 23 H42"/><path d="M73 32 V44 M67 38 H79"/><path d="M57 85 V97 M51 91 H63"/><path d="M83 102 V114 M77 108 H89"/>
+</g>
+<g fill="#FFFFFF">
+<circle cx="9" cy="15" r="1.7"/>
+<circle cx="91" cy="91" r="1.5"/>
+<circle cx="55" cy="119" r="1.8"/>
+</g>
 </svg>
 </div>
 
@@ -298,6 +387,30 @@ header h2 {
 </g>
 </svg>
 <a class="site-title" href="index.html">La bellezza delle crepe</a>
+
+<svg class="luna-fiaba" viewBox="0 0 340 110" aria-hidden="true">
+<g fill="none" stroke="#FFFFFF" stroke-width="1.6"
+   stroke-linecap="round" stroke-linejoin="round">
+<path d="M132 25 A27 27 0 1 0 160 67 A31 31 0 0 1 132 25Z"
+      fill="#FFFFFF" stroke="none"/>
+<path d="M130 78 Q89 79 46 52 M166 78 Q210 78 251 51"/>
+<path d="M105 77 Q92 61 88 54 M105 77 Q91 83 79 79
+         M85 70 Q76 56 72 51 M85 70 Q72 75 62 71
+         M190 77 Q202 60 208 54 M190 77 Q204 84 217 79
+         M211 69 Q224 54 230 50 M211 69 Q224 75 235 70"/>
+<path d="M22 24 L48 39 L68 14 M269 23 L294 39 L321 13"
+      stroke-dasharray="2 4"/>
+</g>
+<g fill="#FFFFFF">
+<path d="M22 17 L24 22 L29 24 L24 26 L22 31 L20 26 L15 24 L20 22Z"/>
+<path d="M68 7 L70 12 L75 14 L70 16 L68 21 L66 16 L61 14 L66 12Z"/>
+<path d="M294 32 L296 37 L301 39 L296 41 L294 46 L292 41 L287 39 L292 37Z"/>
+<path d="M321 6 L323 11 L328 13 L323 15 L321 20 L319 15 L314 13 L319 11Z"/>
+<circle cx="49" cy="39" r="2.5"/>
+<circle cx="269" cy="23" r="2.5"/>
+</g>
+</svg>
+
 <span class="flower">❀</span>
 </header>
 <nav>
