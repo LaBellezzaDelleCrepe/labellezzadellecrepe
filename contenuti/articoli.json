@@ -1,5 +1,18 @@
 [
   {
+    "id": "2026-11-07-prova-scrittoio-20261107020003-41eff7e0",
+    "gestito_da_cms": true,
+    "titolo": "prova scrittoio",
+    "data": "2026-11-07",
+    "categoria": "Pensieri",
+    "copertina": "images/20261107020003-41eff7e0-copertina.png",
+    "estratto": "Questa è una prova di pubblicazione dal mio Scrittoio.",
+    "contenuto": [
+      "Questa è una prova di pubblicazione dal mio Scrittoio."
+    ],
+    "immagini": []
+  },
+  {
     "id": "articolo-1793880182526-8c0de1e7",
     "gestito_da_cms": true,
     "titolo": "Ricordi",
