@@ -23,6 +23,11 @@ input:focus,textarea:focus,select:focus{outline:2px solid #a6b9c2}
 .pulsanti{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 button{flex:1;min-width:140px;padding:13px;border-radius:9px;border:1px solid #b8cbd4;background:#e1eaf0;color:var(--inchiostro);font:20px "Cormorant Garamond",serif;cursor:pointer}
 button:hover{background:#edf3f6}
+#statoPubblicazione{display:none;margin:20px 0;padding:18px 20px;border:2px solid #a7b9c2;border-radius:12px;background:#fffdf9;font:600 21px "Cormorant Garamond",serif;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+#statoPubblicazione.visibile{display:block}
+#statoPubblicazione[data-tipo="errore"]{border-color:#b77f78;background:#fff4f0}
+#statoPubblicazione[data-tipo="successo"]{border-color:#839c80;background:#f2f8ef}
+#pubblicaBtn:disabled{opacity:.65;cursor:wait}
 .nota{text-align:center;font-size:17px;font-style:italic;margin-top:25px}
 footer{text-align:center;padding:20px;font-size:18px}
 </style>
@@ -55,6 +60,7 @@ footer{text-align:center;padding:20px;font-size:18px}
 <button id="anteprimaBtn" type="button">Anteprima</button>
 <button id="pubblicaBtn" type="button">Pubblica articolo</button>
 </div>
+<div id="statoPubblicazione" role="status" aria-live="polite" aria-atomic="true"></div>
 <p id="stato" class="nota" role="status" aria-live="polite">Bozza salvata soltanto in questo browser. Nessun articolo viene pubblicato.</p>
 <div id="anteprima" hidden style="margin-top:35px;border-top:1px solid #d6d0c9;padding-top:25px">
 <h2 id="anteprimaTitolo"></h2>
@@ -365,6 +371,15 @@ footer{text-align:center;padding:20px;font-size:18px}
   const pubblica = document.getElementById("pubblicaBtn");
   let token = sessionStorage.getItem(TOKEN_KEY) || "";
   let occupato = false;
+  const pannelloPubblicazione = document.getElementById("statoPubblicazione");
+  function messaggioPubblicazione(testo, tipo = "info") {
+    pannelloPubblicazione.textContent = testo;
+    pannelloPubblicazione.dataset.tipo = tipo;
+    pannelloPubblicazione.classList.add("visibile");
+    if (tipo === "errore" || tipo === "successo") {
+      pannelloPubblicazione.scrollIntoView({behavior:"smooth",block:"center"});
+    }
+  }
 
   async function api(path, options = {}) {
     if (!token) throw new Error("Collega prima GitHub.");
@@ -466,7 +481,7 @@ footer{text-align:center;padding:20px;font-size:18px}
   pubblica.addEventListener("click", async () => {
     if (occupato) return;
     if (!token) {
-      stato.textContent = "Collega GitHub prima di pubblicare.";
+      messaggioPubblicazione("Collega GitHub prima di pubblicare.", "errore");
       return;
     }
     const titolo = document.getElementById("titolo");
@@ -478,10 +493,11 @@ footer{text-align:center;padding:20px;font-size:18px}
     const anteprima = document.getElementById("anteprimaBtn");
     const statoBozza = document.getElementById("stato");
     if (!titolo.value.trim() || !testo.value.trim()) {
-      statoBozza.textContent = "Inserisci titolo e testo prima di pubblicare.";
+      messaggioPubblicazione("Inserisci titolo e testo prima di pubblicare.", "errore");
       return;
     }
     if (!confirm("Pubblicare questo articolo sul blog?")) return;
+    messaggioPubblicazione("Preparazione dell’articolo in corso…");
     occupato = true;
     const controlli = [titolo, testo, categoria, copertina, salva, inserisci, anteprima, pubblica, collega, scollega];
     controlli.forEach(el => el.disabled = true);
