@@ -400,6 +400,35 @@ footer{text-align:center;padding:20px;font-size:18px}
     pulsante.disabled = false;
   }
 
+
+  async function verificaSessioneScrittoio() {
+    try {
+      const risposta = await fetch(API + "/auth/me", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store"
+      });
+
+      const dati = await risposta.json();
+
+      if (risposta.ok && dati.autenticato === true) {
+        stato.textContent =
+          "GitHub collegato: " + dati.utente;
+        pulsante.textContent = "Connesso a GitHub";
+        pulsante.disabled = true;
+      } else {
+        stato.textContent = "GitHub non ancora collegato.";
+        pulsante.disabled = false;
+      }
+    } catch {
+      stato.textContent =
+        "Impossibile verificare la sessione GitHub.";
+      pulsante.disabled = false;
+    }
+  }
+
+  verificaSessioneScrittoio();
+
   pulsante.addEventListener("click", async () => {
     pulsante.disabled = true;
     stato.textContent = "Preparazione dell'accesso GitHub...";
