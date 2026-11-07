@@ -345,23 +345,61 @@ footer{text-align:center;padding:20px;font-size:18px}
   const API = "https://scrittoio-blog-api.creminopatatino1991.workers.dev";
   const pulsante = document.getElementById("accessoGithub");
   const stato = document.getElementById("statoGithub");
+  const KEY = "scrittoio_session_token";
 
   if (!pulsante || !stato) return;
 
+  function token() {
+    return sessionStorage.getItem(KEY);
+  }
 
-  async function controllaAccessoGithub(id, intervallo) {
+  function mostraConnesso(utente) {
+    stato.textContent = "GitHub collegato: " + utente;
+    pulsante.textContent = "Connesso a GitHub";
+    pulsante.disabled = true;
+  }
+
+  async function verificaSessione() {
+    const valore = token();
+    if (!valore) {
+      stato.textContent = "GitHub non ancora collegato.";
+      return;
+    }
+
+    try {
+      const r = await fetch(API + "/auth/me", {
+        headers: {
+          Authorization: "Bearer " + valore
+        },
+        cache: "no-store"
+      });
+      const d = await r.json();
+
+      if (r.ok && d.autenticato) {
+        mostraConnesso(d.utente);
+      } else {
+        sessionStorage.removeItem(KEY);
+        stato.textContent = "Sessione scaduta. Accedi con GitHub.";
+      }
+    } catch {
+      stato.textContent = "Impossibile verificare GitHub.";
+    }
+  }
+
+  async function controllaAccesso(id, intervallo, scadenza) {
     let attesa = Math.max(5, Number(intervallo) || 5);
-    const scadenza = Date.now() + 9 * 60 * 1000;
+    const limite = Date.now() + Math.min(
+      Number(scadenza) || 600, 600
+    ) * 1000;
 
-    while (Date.now() < scadenza) {
+    while (Date.now() < limite) {
       await new Promise(resolve =>
         setTimeout(resolve, attesa * 1000)
       );
 
       try {
-        const risposta = await fetch(API + "/auth/poll", {
+        const r = await fetch(API + "/auth/poll", {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
             "X-Scrittoio-Request": "1"
@@ -369,74 +407,44 @@ footer{text-align:center;padding:20px;font-size:18px}
           body: JSON.stringify({ accesso_id: id })
         });
 
-        const dati = await risposta.json();
+        const d = await r.json();
 
-        if (dati.stato === "autenticato") {
+        if (r.ok && d.stato === "autenticato") {
+          if (!/^[a-f0-9]{64}$/.test(d.session_token || "")) {
+            throw new Error("Sessione non valida.");
+          }
+
+          sessionStorage.setItem(KEY, d.session_token);
           sessionStorage.removeItem("scrittoio_accesso_id");
           sessionStorage.removeItem("scrittoio_intervallo");
-          stato.textContent =
-            "Accesso GitHub riuscito: " + dati.utente;
-          pulsante.textContent = "Connesso a GitHub";
+          mostraConnesso(d.utente);
           return;
         }
 
-        if (dati.stato === "in_attesa") {
-          attesa = Math.max(5, Number(dati.intervallo) || attesa);
+        if (d.stato === "in_attesa") {
+          attesa = Math.max(5, Number(d.intervallo) || attesa);
           continue;
         }
 
-        throw new Error(
-          dati.errore || "Autorizzazione non completata."
-        );
-      } catch (errore) {
-        stato.textContent = "Accesso interrotto: " + errore.message;
+        throw new Error(d.errore || "Accesso non riuscito.");
+      } catch (e) {
+        stato.textContent = "Errore: " + e.message;
         pulsante.disabled = false;
         return;
       }
     }
 
-    stato.textContent =
-      "Tempo scaduto. Premi Accedi con GitHub per riprovare.";
+    stato.textContent = "Tempo scaduto. Riprova l'accesso.";
     pulsante.disabled = false;
   }
 
-
-  async function verificaSessioneScrittoio() {
-    try {
-      const risposta = await fetch(API + "/auth/me", {
-        method: "GET",
-        credentials: "include",
-        cache: "no-store"
-      });
-
-      const dati = await risposta.json();
-
-      if (risposta.ok && dati.autenticato === true) {
-        stato.textContent =
-          "GitHub collegato: " + dati.utente;
-        pulsante.textContent = "Connesso a GitHub";
-        pulsante.disabled = true;
-      } else {
-        stato.textContent = "GitHub non ancora collegato.";
-        pulsante.disabled = false;
-      }
-    } catch {
-      stato.textContent =
-        "Impossibile verificare la sessione GitHub.";
-      pulsante.disabled = false;
-    }
-  }
-
-  verificaSessioneScrittoio();
-
   pulsante.addEventListener("click", async () => {
     pulsante.disabled = true;
-    stato.textContent = "Preparazione dell'accesso GitHub...";
+    stato.textContent = "Collegamento a GitHub...";
 
     try {
-      const risposta = await fetch(API + "/auth/start", {
+      const r = await fetch(API + "/auth/start", {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "X-Scrittoio-Request": "1"
@@ -444,53 +452,44 @@ footer{text-align:center;padding:20px;font-size:18px}
         body: "{}"
       });
 
-      const dati = await risposta.json();
+      const d = await r.json();
 
-      if (!risposta.ok || !dati.accesso_id) {
-        throw new Error(dati.errore || "Accesso non disponibile.");
+      if (!r.ok || !d.accesso_id) {
+        throw new Error(d.errore || "Accesso non disponibile.");
       }
-
-      // Conserviamo solo l'identificativo temporaneo
-      // necessario per completare l'accesso.
-      sessionStorage.setItem(
-        "scrittoio_accesso_id",
-        dati.accesso_id
-      );
-      sessionStorage.setItem(
-        "scrittoio_intervallo",
-        String(dati.intervallo || 5)
-      );
 
       stato.textContent = "";
 
-      const istruzioni = document.createElement("div");
-      istruzioni.style.marginTop = "12px";
-
-      const testo = document.createElement("p");
-      testo.textContent = "Inserisci questo codice su GitHub:";
+      const contenitore = document.createElement("div");
+      const istruzioni = document.createElement("p");
+      istruzioni.textContent = "Inserisci questo codice su GitHub:";
 
       const codice = document.createElement("strong");
-      codice.textContent = dati.codice;
+      codice.textContent = d.codice;
       codice.style.display = "block";
       codice.style.fontSize = "24px";
       codice.style.margin = "10px";
 
       const link = document.createElement("a");
-      link.href = dati.indirizzo;
+      link.href = d.indirizzo;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       link.textContent = "Apri GitHub per autorizzare";
 
-      istruzioni.append(testo, codice, link);
-      stato.appendChild(istruzioni);
+      contenitore.append(istruzioni, codice, link);
+      stato.appendChild(contenitore);
 
-      controllaAccessoGithub(dati.accesso_id, dati.intervallo);
+      await controllaAccesso(
+        d.accesso_id, d.intervallo, d.scadenza
+      );
 
-    } catch (errore) {
-      stato.textContent = "Errore: " + errore.message;
+    } catch (e) {
+      stato.textContent = "Errore: " + e.message;
       pulsante.disabled = false;
     }
   });
+
+  verificaSessione();
 })();
 </script>
 
